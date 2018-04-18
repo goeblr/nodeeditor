@@ -87,14 +87,12 @@ createConnection(Node& nodeIn,
                                  portIndexIn,
                                  nodeOut,
                                  portIndexOut);
-
-  auto cgo = std::make_unique<ConnectionGraphicsObject>(*this, *connection);
-
-  nodeIn.nodeState().setConnection(PortType::In, portIndexIn, *connection);
-  nodeOut.nodeState().setConnection(PortType::Out, portIndexOut, *connection);
-
+   auto cgo = std::make_unique<ConnectionGraphicsObject>(*this, *connection);
   // after this function connection points are set to node port
   connection->setGraphicsObject(std::move(cgo));
+  
+  nodeIn.nodeState().setConnection(PortType::In, portIndexIn, *connection);
+  nodeOut.nodeState().setConnection(PortType::Out, portIndexOut, *connection);
 
   // trigger data propagation
   nodeOut.onDataUpdated(portIndexOut);

@@ -99,34 +99,38 @@ ConnectionGeometry::
 pointsC1C2() const
 {
   double xDistance = _in.x() - _out.x();
-  //double yDistance = _in.y() - _out.y() - 100;
 
   double defaultOffset = 200;
 
   double minimum = qMin(defaultOffset, std::abs(xDistance));
 
-  double verticalOffset = 0;
+  double verticalOffset1 = 0;
+  double verticalOffset2 = 0;
 
   double ratio1 = 0.5;
 
   if (xDistance <= 0)
   {
-    verticalOffset = -minimum;
+	  if (_in.y() > _out.y())
+	  {
+		  verticalOffset1 = minimum;
+		  verticalOffset2 = -minimum;
+	  }
+	  else
+	  {
+		  verticalOffset1 = -minimum;
+		  verticalOffset2 = minimum;
+	  }
+    
 
     ratio1 = 1.0;
   }
 
-  //double verticalOffset2 = verticalOffset;
-  //if (xDistance <= 0)
-  //verticalOffset2 = qMin(defaultOffset, std::abs(yDistance));
-  //auto sign = [](double d) { return d > 0.0 ? +1.0 : -1.0; };
-  //verticalOffset2 = 0.0;
-
   QPointF c1(_out.x() + minimum * ratio1,
-             _out.y() + verticalOffset);
+             _out.y() + verticalOffset1);
 
   QPointF c2(_in.x() - minimum * ratio1,
-             _in.y() + verticalOffset);
+             _in.y() + verticalOffset2);
 
   return std::make_pair(c1, c2);
 }
