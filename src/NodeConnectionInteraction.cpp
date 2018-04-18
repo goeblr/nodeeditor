@@ -158,6 +158,9 @@ tryConnect() const
     outNode->onDataUpdated(outPortIndex);
   }
 
+  // 6) Send connection signal
+  _scene->connectionCreated(*_connection);
+
   return true;
 }
 
@@ -169,6 +172,8 @@ bool
 NodeConnectionInteraction::
 disconnect(PortType portToDisconnect) const
 {
+	_scene->connectionDeleted(*_connection);
+
   PortIndex portIndex =
     _connection->getPortIndex(portToDisconnect);
 
