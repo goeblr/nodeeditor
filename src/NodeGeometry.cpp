@@ -141,30 +141,25 @@ portScenePosition(int index,
 
   QPointF result;
 
-  double totalHeight = 0.0;
+  double totalWidth = 0.0;
 
-  totalHeight += captionHeight();
-
-  totalHeight += step * index;
-
-  // TODO: why?
-  totalHeight += step / 2.0;
+  double x = _width / 2 + step * index;
 
   switch (portType)
   {
     case PortType::Out:
     {
-      double x = _width + nodeStyle.ConnectionPointDiameter;
+      double y = _height + nodeStyle.ConnectionPointDiameter;
 
-      result = QPointF(x, totalHeight);
+      result = QPointF(x, y);
       break;
     }
 
     case PortType::In:
     {
-      double x = 0.0 - nodeStyle.ConnectionPointDiameter;
+      double y = 0.0 - nodeStyle.ConnectionPointDiameter;
 
-      result = QPointF(x, totalHeight);
+      result = QPointF(x, y);
       break;
     }
 
