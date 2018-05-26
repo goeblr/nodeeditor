@@ -88,7 +88,7 @@ target_compile_options(nodes
 
 target_compile_features(nodes
   PUBLIC
-    cxx_generic_lambdas # Require C++14
+    cxx_lambdas # Require C++11
 )
 
 set_target_properties(nodes
