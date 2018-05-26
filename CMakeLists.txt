@@ -48,7 +48,7 @@ set(CPP_SOURCE_FILES
 # If we want to give the option to build a static library,
 # leave off SHARED here and use BUILD_SHARED_LIBS to
 # choose whether to add -D NODE_EDITOR_SHARED
-add_library(nodes SHARED
+add_library(nodes STATIC
   ${CPP_SOURCE_FILES}
   ${RESOURCES}
 )
