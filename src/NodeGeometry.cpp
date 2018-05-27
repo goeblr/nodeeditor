@@ -136,35 +136,39 @@ portScenePosition(PortIndex index,
                   QTransform t) const
 {
   auto const &nodeStyle = StyleCollection::nodeStyle();
-
   unsigned int step = _entryHeight + _spacing;
 
   QPointF result;
 
-  double totalWidth = 0.0;
+  double totalHeight = 0.0;
 
-  double x = _width / 2 + step * index;
+  totalHeight += captionHeight();
+
+  totalHeight += step * index;
+
+  // TODO: why?
+  totalHeight += step / 2.0;
 
   switch (portType)
   {
-    case PortType::Out:
-    {
-      double y = _height + nodeStyle.ConnectionPointDiameter;
+  case PortType::Out:
+  {
+	  double x = _width + nodeStyle.ConnectionPointDiameter;
 
-      result = QPointF(x, y);
-      break;
-    }
+	  result = QPointF(x, totalHeight);
+	  break;
+  }
 
-    case PortType::In:
-    {
-      double y = 0.0 - nodeStyle.ConnectionPointDiameter;
+  case PortType::In:
+  {
+	  double x = 0.0 - nodeStyle.ConnectionPointDiameter;
 
-      result = QPointF(x, y);
-      break;
-    }
+	  result = QPointF(x, totalHeight);
+	  break;
+  }
 
-    default:
-      break;
+  default:
+	  break;
   }
 
   return t.map(result);
