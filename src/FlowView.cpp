@@ -151,7 +151,7 @@ contextMenuEvent(QContextMenuEvent *event)
 
   treeView->expandAll();
 
-  connect(treeView, &QTreeWidget::itemClicked, [&](QTreeWidgetItem *item, int)
+  connect(treeView, &QTreeWidget::itemActivated, [&](QTreeWidgetItem *item, int)
   {
     QString modelName = item->data(0, Qt::UserRole).toString();
 
@@ -199,6 +199,48 @@ contextMenuEvent(QContextMenuEvent *event)
         }
       }
     }
+  });
+
+  connect(txtBox, &QLineEdit::returnPressed, [&]()
+  {
+	  auto text = txtBox->text();
+	  unsigned int numMatches = 0;
+	  QString modelNameMatch;
+	  for (auto& topLvlItem : topLevelItems)
+	  {
+		  for (int i = 0; i < topLvlItem->childCount(); ++i)
+		  {
+			  auto child = topLvlItem->child(i);
+			  auto modelName = child->data(0, Qt::UserRole).toString();
+			  if (modelName.contains(text, Qt::CaseInsensitive))
+			  {
+				  numMatches++;
+				  modelNameMatch = modelName;
+			  }
+		  }
+	  }
+
+	  if (numMatches == 1)
+	  {
+		  auto type = _scene->registry().create(modelNameMatch);
+
+		  if (type)
+		  {
+			  auto& node = _scene->createNode(std::move(type));
+
+			  QPoint pos = event->pos();
+
+			  QPointF posView = this->mapToScene(pos);
+
+			  node.nodeGraphicsObject().setPos(posView);
+		  }
+		  else
+		  {
+			  qDebug() << "Model not found";
+		  }
+
+		  modelMenu.close();
+	  }
   });
 
   // make sure the text box gets focus so the user doesn't have to click on it
