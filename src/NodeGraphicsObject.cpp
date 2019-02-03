@@ -326,14 +326,33 @@ void
 NodeGraphicsObject::
 mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-  auto & state = _node.nodeState();
+  if (event->button() == Qt::LeftButton)
+  {
+    auto & state = _node.nodeState();
 
-  state.setResizing(false);
+    state.setResizing(false);
 
-  QGraphicsObject::mouseReleaseEvent(event);
+	QGraphicsObject::mouseReleaseEvent(event);
 
-  // position connections precisely after fast node move
-  moveConnections();
+    // position connections precisely after fast node move
+    moveConnections();
+  }
+  else if (event->button() == Qt::RightButton)
+  {
+	auto type = _node.nodeDataModel()->clone();
+
+	if (type)
+	{
+		auto& node = _scene.createNode(std::move(type));
+		node.nodeGraphicsObject().setPos(this->pos() + QPointF(0, 100));
+	}
+	else
+	{
+		qDebug() << "Model not found";
+	}
+	
+	QGraphicsObject::mouseReleaseEvent(event);
+  }
 }
 
 
