@@ -1,6 +1,9 @@
 #pragma once
 
-/*#include <functional>
+#include <QtGlobal>
+#if QT_VERSION < 0x051400
+
+#include <functional>
 
 #include <QtCore/QString>
 #include <QtCore/QVariant>
@@ -16,4 +19,6 @@ struct hash<QString>
     return qHash(s);
   }
 };
-}*/
+}
+
+#endif
