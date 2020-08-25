@@ -1,8 +1,8 @@
 #pragma once
 
+#ifndef Q_MOC_RUN
 #include <QtGlobal>
-#if QT_VERSION < 0x051400
-
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 1)
 #include <functional>
 
 #include <QtCore/QString>
@@ -21,4 +21,5 @@ struct hash<QString>
 };
 }
 
+#endif
 #endif
